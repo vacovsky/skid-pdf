@@ -6,14 +6,18 @@ import (
 	"github.com/terryh/gopdf"
 )
 
-func makePDFFromURL(body string) []byte {
-	result, err := gopdf.Url2pdf("http://nvd3.org/examples/stackedArea.html")
+func getBytesFromURL(pdfURL string) []byte {
+	return []byte{}
+}
+
+func makePDFFromURL(pdfURL string) []byte {
+	result, err := gopdf.Url2pdf(pdfURL)
 	fmt.Println(err)
 	return result
 }
 
-func makePDFFromImage(body string) []byte {
-	result, err := gopdf.Url2jpeg("http://nvd3.org/examples/stackedArea.html")
+func makePDFFromImage(pdfURL string) []byte {
+	result, err := gopdf.Url2jpeg(pdfURL)
 	fmt.Println(err)
 	return result
 }

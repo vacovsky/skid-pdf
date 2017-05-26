@@ -7,9 +7,9 @@ import (
 func main() {
 	wg := &sync.WaitGroup{}
 
-	go startRouter()
+	go startHTTPRouter()
 	wg.Add(1)
-
+	wg.Wait()
 	// go startRouter()
 	// wg.Add(1)
 }
