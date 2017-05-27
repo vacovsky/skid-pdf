@@ -10,10 +10,10 @@ import (
 const wkhtmltopdfCmd = "wkhtmltopdf"
 
 // WkOrientationLandscape - if passed, sets orientation to landscape
-const WkOrientationLandscape = " -O Landscape "
+var WkOrientationLandscape = []string{"-O", "Landscape"}
 
 //WkGrayscale - If passed, created PDF will be grayscale
-const WkGrayscale = " -g "
+var WkGrayscale = []string{"-g"}
 
 // GenerateWKPDF creates PDF from target URL.  First argument is the URL to
 // be converted, other arguments should be pulled from the constants above.

@@ -41,10 +41,10 @@ func pdfHandle(w http.ResponseWriter, r *http.Request) {
 
 	extraParams := []string{}
 	if useGrayscal {
-		extraParams = append(extraParams, WkGrayscale)
+		extraParams = append(extraParams, WkGrayscale...)
 	}
 	if useLandscape {
-		extraParams = append(extraParams, WkOrientationLandscape)
+		extraParams = append(extraParams, WkOrientationLandscape...)
 	}
 
 	result := GenerateWKPDF(pdfURL, extraParams)
