@@ -4,6 +4,11 @@ import (
 	"sync"
 )
 
+var (
+	appname = "skid-pdf"
+	version = "0.1.0"
+)
+
 func main() {
 	wg := &sync.WaitGroup{}
 
@@ -16,5 +21,4 @@ func main() {
 	wg.Add(1)
 
 	wg.Wait()
-
 }
