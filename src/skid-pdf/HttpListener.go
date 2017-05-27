@@ -30,7 +30,7 @@ func help(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func startHTTPRouter() {
+func startHTTPListener() {
 	http.HandleFunc("/", landing)  // exlains what the service does and how to use it.
 	http.HandleFunc("/help", help) // goes to source page
 	http.HandleFunc("/html", pdfHandle)

@@ -1,1 +1,1 @@
-# a little wrapper around pdf creation
+# a little wrapper for pdf creation
