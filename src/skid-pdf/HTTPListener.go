@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 func gofPDFHandle(w http.ResponseWriter, r *http.Request) {
@@ -16,17 +18,26 @@ func gofPDFHandle(w http.ResponseWriter, r *http.Request) {
 	// w.Write(result)
 }
 
+// http://localhost:8080/html?grayscale=false&landscape=true&uri=developers.mindbodyonline.com
 func pdfHandle(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
 
-	useGrayscal, err := strconv.ParseBool(r.Form.Get("grayscale"))
-	useLandscape, err := strconv.ParseBool(r.Form.Get("landscape"))
-
+	grayscaleForm := r.Form.Get("grayscale")
+	useGrayscal, err := strconv.ParseBool(grayscaleForm)
 	if err != nil {
-		print("Unable to parse all params from query string")
+		fmt.Println("Unable to parse grayscale from query string")
+		fmt.Println(err)
+
 	}
 
-	r.ParseForm()
-	pdfURL := fmt.Sprintf("http://%s?sid=%s", r.Form.Get("uri"), r.Form.Get("sid"))
+	landscapeForm := r.Form.Get("landscape")
+	useLandscape, err := strconv.ParseBool(landscapeForm)
+	if err != nil {
+		fmt.Println("Unable to parse landscape from query string")
+		fmt.Println(err)
+	}
+
+	pdfURL := fmt.Sprintf("\"%s\"", r.Form.Get("uri")) //, r.Form.Get("sid"))
 
 	extraParams := []string{}
 	if useGrayscal {
@@ -36,7 +47,7 @@ func pdfHandle(w http.ResponseWriter, r *http.Request) {
 		extraParams = append(extraParams, WkOrientationLandscape)
 	}
 
-	result := GenerateWKPDF(pdfURL)
+	result := GenerateWKPDF(pdfURL, extraParams)
 	w.Header().Set("Content-Type", "application/pdf")
 	w.Write(result)
 }
@@ -50,6 +61,7 @@ func help(w http.ResponseWriter, r *http.Request) {
 }
 
 func startHTTPListener() {
+
 	http.HandleFunc("/", landing)  // exlains what the service does and how to use it.
 	http.HandleFunc("/help", help) // goes to source page
 	http.HandleFunc("/html", pdfHandle)
@@ -57,6 +69,12 @@ func startHTTPListener() {
 
 	// http.HandleFunc("/jpeg", jpegHandle)
 
-	http.ListenAndServe(":8080", nil)
+	s := &http.Server{
+		Addr:           ":8080",
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+	log.Fatal(s.ListenAndServe())
 
 }

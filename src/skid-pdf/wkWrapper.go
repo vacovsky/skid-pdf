@@ -10,10 +10,10 @@ import (
 const wkhtmltopdfCmd = "wkhtmltopdf"
 
 // WkOrientationLandscape - if passed, sets orientation to landscape
-const WkOrientationLandscape = " --orientation Landscape "
+const WkOrientationLandscape = " -O Landscape "
 
 //WkGrayscale - If passed, created PDF will be grayscale
-const WkGrayscale = " --grayscale "
+const WkGrayscale = " -g "
 
 // GenerateWKPDF creates PDF from target URL.  First argument is the URL to
 // be converted, other arguments should be pulled from the constants above.
@@ -21,20 +21,21 @@ const WkGrayscale = " --grayscale "
 // buffered by spaces on both sides.  The result will look something
 // like this:
 // $> wkhtmltopdf http://someurl/something.html - --your-arguments
-func GenerateWKPDF(targetURL string, params ...string) []byte {
+func GenerateWKPDF(targetURL string, params []string) []byte {
 	var result bytes.Buffer
-
-	wkCommand := []string{targetURL}
+	wkCommand := []string{}
 
 	for _, param := range params {
 		wkCommand = append(wkCommand, param)
 	}
+
+	wkCommand = append(wkCommand, targetURL)
 	wkCommand = append(wkCommand, "-")
 
 	cmd := exec.Command(wkhtmltopdfCmd, wkCommand...)
 
 	// for testing
-	fmt.Println(cmd)
+	fmt.Println(wkhtmltopdfCmd, wkCommand)
 
 	cmd.Stdout = &result
 	err := cmd.Run()
