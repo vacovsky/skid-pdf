@@ -3,7 +3,7 @@ RUN yum install -y epel-release
 # RUN yum install -y xorg-x11-fonts-75dpi
 # RUN yum install -y xorg-x11-fonts-Type1
 # RUN yum install -y wget
-RUN yum install -y wkhtmltopdf openssl xorg-x11-server-Xvfb
+RUN yum install -y wkhtmltopdf openssl xorg-x11-server-Xvfb urw-fonts
 RUN echo -e '#!/bin/bash\nxvfb-run -a --server-args="-screen 0, 1024x768x24" /usr/bin/wkhtmltopdf -q $*' > /usr/bin/wkhtmltopdf.sh; chmod a+x /usr/bin/wkhtmltopdf.sh; ln -s /usr/bin/wkhtmltopdf.sh /usr/local/bin/wkhtmltopdf
 # RUN yum -y groups install "X Window System"
 # RUN yum install -y bash
