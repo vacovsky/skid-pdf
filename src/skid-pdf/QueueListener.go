@@ -12,10 +12,11 @@ import (
 )
 
 type pdfRequest struct {
-	URL            string   `json:"url"`
-	Params         []string `json:"params"`
-	TargetFileName string   `json:"targetFileName"`
-	TargetFileDest string   `json:"targetFileDest"`
+	URL            string `json:"url"`
+	Grayscale      bool   `json:"grayscale"`
+	Landscape      bool   `json:"landscape"`
+	TargetFileName string `json:"targetFileName"`
+	TargetFileDest string `json:"targetFileDest"`
 }
 
 func startQueueListener(wg *sync.WaitGroup) {
