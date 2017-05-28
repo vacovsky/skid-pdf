@@ -1,0 +1,6 @@
+{
+    "httpPort": "8080",
+    "useQueue": false,
+    "queueConnectionString": "",
+    "queueChannel": ""
+}

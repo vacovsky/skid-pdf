@@ -9,13 +9,17 @@ import (
 
 var conn *amqp.Connection
 
+func startQueueListener() {
+
+}
+
 func rabbitConnect() {
-	conn, ERR = amqp.Dial(RMQCONNSTRING)
-	if ERR != nil {
+	conn, err := amqp.Dial(settings.QueueConnectionString)
+	if err != nil {
 		for conn == nil {
-			fmt.Println(ERR, "Waiting 15 seconds and attempting to connect to RabbitMQ again.")
+			fmt.Println(err, "Waiting 15 seconds and attempting to connect to RabbitMQ again.")
 			time.Sleep(time.Duration(15) * time.Second)
-			conn, ERR = amqp.Dial(RMQCONNSTRING)
+			conn, err = amqp.Dial(settings.QueueConnectionString)
 		}
 	}
 }
