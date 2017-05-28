@@ -8,7 +8,6 @@ import (
 
 	"sync"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/streadway/amqp"
 )
 
@@ -119,7 +118,6 @@ func messageHandler(queueName string, message []byte, wg *sync.WaitGroup) {
 	defer wg.Done()
 	log.Println(queueName, message)
 	m := pdfRequest{}
-	spew.Dump(message)
 	json.Unmarshal(message, &m)
 	go hookForAMQP(&m)
 }

@@ -2,8 +2,6 @@ package main
 
 import (
 	"sync"
-
-	"github.com/davecgh/go-spew/spew"
 )
 
 var (
@@ -15,7 +13,6 @@ var (
 func main() {
 	// load settings from file
 	settings.load()
-	spew.Dump(settings)
 	wg := &sync.WaitGroup{}
 
 	// listen for inbound http-originating requests for PDFs
