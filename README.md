@@ -39,7 +39,7 @@ Alternately, browse to ```http://localhost:8080/html?grayscale=false&landscape=t
 
 ``` javascript
 {
-    "url": "https://mindbodyonline.com",
+    "url": "https://google.com",
     "grayscale": true,
     "landscape": true,
     "targetFileName": "test1.pdf",
