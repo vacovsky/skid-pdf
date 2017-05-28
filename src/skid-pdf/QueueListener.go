@@ -11,8 +11,6 @@ import (
 	"github.com/streadway/amqp"
 )
 
-var conn *amqp.Connection
-
 type pdfRequest struct {
 	URL            string   `json:"url"`
 	Params         []string `json:"params"`
@@ -22,22 +20,26 @@ type pdfRequest struct {
 
 func startQueueListener(wg *sync.WaitGroup) {
 	defer wg.Done()
-	rabbitReceive(settings.QueueChannel, wg)
-}
-
-func rabbitConnect() {
 	conn, err := amqp.Dial(settings.QueueConnectionString)
 	if err != nil {
-		for conn == nil {
-			fmt.Println(err, "Waiting 15 seconds and attempting to connect to RabbitMQ again.")
-			time.Sleep(time.Duration(15) * time.Second)
-			conn, err = amqp.Dial(settings.QueueConnectionString)
-		}
+		log.Println(err)
 	}
+	rabbitReceive(conn, settings.QueueChannel, wg)
 }
 
-func rabbitSend(queueName string, body string) {
-	rabbitConnect()
+// func rabbitConnect() *amqp.Connection {
+// 	conn, err := amqp.Dial(settings.QueueConnectionString)
+// 	if err != nil {
+// 		for conn == nil {
+// 			fmt.Println(err, "Waiting 15 seconds and attempting to connect to RabbitMQ again.")
+// 			time.Sleep(time.Duration(15) * time.Second)
+// 			conn, err = amqp.Dial(settings.QueueConnectionString)
+// 		}
+// 	}
+// }
+
+func rabbitSend(conn *amqp.Connection, queueName string, body string) {
+	// rabbitConnect()
 	defer conn.Close()
 
 	fmt.Println("Sending", body, "to", queueName)
@@ -75,8 +77,8 @@ func rabbitSend(queueName string, body string) {
 
 }
 
-func rabbitReceive(queueName string, wg *sync.WaitGroup) {
-	rabbitConnect()
+func rabbitReceive(conn *amqp.Connection, queueName string, wg *sync.WaitGroup) {
+	// rabbitConnect()
 	defer conn.Close()
 
 	for {
