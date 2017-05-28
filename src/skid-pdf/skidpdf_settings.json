@@ -1,6 +1,6 @@
 {
-    "httpPort": "8080",
-    "useQueue": false,
-    "queueConnectionString": "",
-    "queueChannel": ""
+    "httpPort": "8081",
+    "useQueue": true,
+    "queueConnectionString": "amqp://rabbit:bunnyrabbit!!@192.168.111.50:5672/",
+    "queueChannel": "skidpdf"
 }

@@ -45,3 +45,7 @@ func GenerateWKPDF(targetURL string, params []string) []byte {
 	}
 	return result.Bytes()
 }
+
+func hookForAMQP(r *pdfRequest) {
+	GenerateWKPDF(r.url, r.params)
+}

@@ -53,11 +53,11 @@ func pdfHandle(w http.ResponseWriter, r *http.Request) {
 }
 
 func landing(w http.ResponseWriter, r *http.Request) {
-
+	http.Redirect(w, r, "https://github.com/vacoj/skid-pdf", 301)
 }
 
 func help(w http.ResponseWriter, r *http.Request) {
-
+	http.Redirect(w, r, "https://github.com/vacoj/skid-pdf", 301)
 }
 
 func startHTTPListener() {
@@ -70,7 +70,7 @@ func startHTTPListener() {
 	// http.HandleFunc("/jpeg", jpegHandle)
 
 	s := &http.Server{
-		Addr:           settings.HTTPPort,
+		Addr:           ":" + settings.HTTPPort,
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,
 		MaxHeaderBytes: 1 << 20,

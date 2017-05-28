@@ -1,16 +1,26 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"time"
+
+	"sync"
 
 	"github.com/streadway/amqp"
 )
 
 var conn *amqp.Connection
 
-func startQueueListener() {
+type pdfRequest struct {
+	url    string
+	params []string
+}
 
+func startQueueListener(wg *sync.WaitGroup) {
+	defer wg.Done()
+	rabbitReceive(settings.QueueChannel, wg)
 }
 
 func rabbitConnect() {
@@ -63,20 +73,18 @@ func rabbitSend(queueName string, body string) {
 
 }
 
-func rabbitReceive(queueName string) {
+func rabbitReceive(queueName string, wg *sync.WaitGroup) {
 	rabbitConnect()
 	defer conn.Close()
 
 	for {
-		fmt.Println(ERR, "Failed to connect to RabbitMQ")
-
-		ch, ERR := conn.Channel()
-		if ERR != nil {
-			fmt.Println(ERR, "Failed to open a channel")
+		ch, err := conn.Channel()
+		if err != nil {
+			fmt.Println(err, "Failed to open a channel")
 		}
 		defer ch.Close()
 
-		q, ERR := ch.QueueDeclare(
+		q, err := ch.QueueDeclare(
 			queueName, // name
 			true,      // durable
 			false,     // delete when unused
@@ -86,43 +94,27 @@ func rabbitReceive(queueName string) {
 		)
 		autoAck := true
 
-		msgs, ERR := ch.Consume(q.Name, "", autoAck, false, false, false, nil)
-		if ERR != nil {
-			fmt.Println(ERR)
+		message, err := ch.Consume(q.Name, "", autoAck, false, false, false, nil)
+		if err != nil {
+			fmt.Println(err)
 		}
 
 		time.Sleep(500 * time.Millisecond)
 
-		for d := range msgs { // the d stands for Delivery
+		for d := range message { // the d stands for Delivery
 			fmt.Println(string(d.Body[:]))
-			messageHandler(queueName, d.Body)
+			messageHandler(queueName, d.Body, wg)
 		}
 	}
 }
 
-func messageHandler(queueName string, message []byte) {
-	if queueName == SETTINGS.RabbitMQ.TaskQueue {
-		fmt.Println(queueName, message)
-		reactToGpioMessage(message)
-	}
-}
+func messageHandler(queueName string, message []byte, wg *sync.WaitGroup) {
+	wg.Add(1)
+	defer wg.Done()
+	log.Println(queueName, message)
 
-func listenForTasks() {
-	defer WG.Done()
-	for {
-		ORQMutex.Lock()
-		q := OfflineRunQueue
-		ORQMutex.Unlock()
+	m := pdfRequest{}
+	json.Unmarshal(message, &m)
+	go hookForAMQP(&m)
 
-		var task *Task
-		if len(q) > 0 {
-			fmt.Println("Task found.")
-			ORQMutex.Lock()
-			task, OfflineRunQueue = OfflineRunQueue[len(OfflineRunQueue)-1],
-				OfflineRunQueue[:len(OfflineRunQueue)-1]
-			ORQMutex.Unlock()
-			task.execute()
-		}
-		time.Sleep(time.Duration(1000) * time.Millisecond)
-	}
 }
