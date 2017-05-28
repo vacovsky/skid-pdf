@@ -10,7 +10,7 @@ A microservice docker container for converting web pages into PDF files.
 curl "http://localhost:8080/html?grayscale=false&landscape=true&uri=google.com" > google.pdf
 ```
 
-Alternately, browse to ```http://localhost:8080/html?grayscale=false&landscape=true&uri=google.com``` with chrome to see the PDF.
+Alternately, browse to ```http://localhost:8080/html?uri=https://github.com/vacoj/skid-pdf&portrait=0&grayscale=0``` with chrome to see the PDF.
 
 ### Using HTTP
 
