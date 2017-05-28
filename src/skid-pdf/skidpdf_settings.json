@@ -1,0 +1,7 @@
+{
+    "httpPort": "8080",
+    "useQueue": true,
+    "queueConnectionString": "amqp://rabbit:bunnyrabbit!!@192.168.111.50:5672/",
+    "queueChannel": "skidpdf",
+    "autoAck": true
+}

@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"fmt"
 	"log"
+	"os"
 	"os/exec"
+	"path"
 )
 
 const wkhtmltopdfCmd = "wkhtmltopdf"
@@ -44,4 +46,23 @@ func GenerateWKPDF(targetURL string, params []string) []byte {
 		log.Print(err, err.Error)
 	}
 	return result.Bytes()
+}
+
+func hookForAMQP(r *pdfRequest) {
+	params := []string{}
+
+	if r.Grayscale {
+		params = append(params, WkGrayscale...)
+	}
+	if r.Landscape {
+		params = append(params, WkOrientationLandscape...)
+	}
+	pdfResult := GenerateWKPDF(r.URL, params)
+	// WriteFileToPlace()
+	fmt.Println(pdfResult)
+	writer, err := os.Create(path.Join(r.TargetFileDest, r.TargetFileName))
+	if err != nil {
+
+	}
+	writer.Write(pdfResult)
 }
