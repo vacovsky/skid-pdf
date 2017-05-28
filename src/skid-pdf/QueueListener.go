@@ -8,6 +8,7 @@ import (
 
 	"sync"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/streadway/amqp"
 )
 
@@ -97,7 +98,7 @@ func rabbitReceive(conn *amqp.Connection, queueName string, wg *sync.WaitGroup) 
 			false,     // no-wait
 			nil,       // arguments
 		)
-		autoAck := true
+		autoAck := settings.AutoAck
 
 		message, err := ch.Consume(q.Name, "", autoAck, false, false, false, nil)
 		if err != nil {
@@ -117,8 +118,8 @@ func messageHandler(queueName string, message []byte, wg *sync.WaitGroup) {
 	wg.Add(1)
 	defer wg.Done()
 	log.Println(queueName, message)
-
 	m := pdfRequest{}
+	spew.Dump(message)
 	json.Unmarshal(message, &m)
 	go hookForAMQP(&m)
 }

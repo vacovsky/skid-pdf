@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"fmt"
 	"log"
+	"os"
 	"os/exec"
-
-	"github.com/davecgh/go-spew/spew"
+	"path"
 )
 
 const wkhtmltopdfCmd = "wkhtmltopdf"
@@ -60,5 +60,9 @@ func hookForAMQP(r *pdfRequest) {
 	pdfResult := GenerateWKPDF(r.URL, params)
 	// WriteFileToPlace()
 	fmt.Println(pdfResult)
-	spew.Dump(r)
+	writer, err := os.Create(path.Join(r.TargetFileDest, r.TargetFileName))
+	if err != nil {
+
+	}
+	writer.Write(pdfResult)
 }

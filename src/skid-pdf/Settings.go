@@ -13,6 +13,7 @@ type Settings struct {
 	UseQueue              bool   `json:"useQueue"`
 	QueueConnectionString string `json:"queueConnectionString"`
 	QueueChannel          string `json:"queueChannel"`
+	AutoAck               bool   `json:"autoAck"`
 }
 
 func (s *Settings) load() {
