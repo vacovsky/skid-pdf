@@ -41,7 +41,7 @@ func GenerateWKPDF(targetURL string, params []string) []byte {
 	err := cmd.Run()
 
 	if err != nil {
-		log.Print(err)
+		log.Print(err, err.Error)
 	}
 	return result.Bytes()
 }
