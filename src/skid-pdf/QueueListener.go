@@ -14,8 +14,10 @@ import (
 var conn *amqp.Connection
 
 type pdfRequest struct {
-	url    string
-	params []string
+	URL            string   `json:"url"`
+	Params         []string `json:"params"`
+	TargetFileName string   `json:"targetFileName"`
+	TargetFileDest string   `json:"targetFileDest"`
 }
 
 func startQueueListener(wg *sync.WaitGroup) {
@@ -116,5 +118,4 @@ func messageHandler(queueName string, message []byte, wg *sync.WaitGroup) {
 	m := pdfRequest{}
 	json.Unmarshal(message, &m)
 	go hookForAMQP(&m)
-
 }
