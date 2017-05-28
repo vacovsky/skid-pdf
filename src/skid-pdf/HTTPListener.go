@@ -37,7 +37,7 @@ func pdfHandle(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 
-	pdfURL := fmt.Sprintf("\"%s\"", r.Form.Get("uri")) //, r.Form.Get("sid"))
+	pdfURL := fmt.Sprintf("%s", r.Form.Get("uri")) //, r.Form.Get("sid"))
 
 	extraParams := []string{}
 	if useGrayscal {
