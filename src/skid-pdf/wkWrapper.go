@@ -80,12 +80,10 @@ func generateFromPDFRequest(p *pdfRequest) []byte {
 	}
 
 	return generateWKPDF(p.URL, extraParams)
-
 }
 
 func hookForAMQP(r *pdfRequest) {
 	pdfResult := generateFromPDFRequest(r)
-	fmt.Println(pdfResult)
 	writer, err := os.Create(path.Join(r.TargetFileDest, r.TargetFileName))
 	if err != nil {
 		log.Println(err)
