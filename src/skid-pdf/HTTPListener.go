@@ -21,14 +21,13 @@ func pdfHandle(w http.ResponseWriter, r *http.Request) {
 		pdfr.Data = r.FormValue("data")
 		pdfr.URL = r.FormValue("url")
 
-		gs := r.Form.Get("grayscale")
+		gs := r.FormValue("grayscale")
 		pdfr.Grayscale, err = strconv.ParseBool(gs)
 		if err != nil {
 			fmt.Println("Unable to parse grayscale from query string")
 			fmt.Println(err)
 		}
-
-		landscapeForm := r.Form.Get("landscape")
+		landscapeForm := r.FormValue("landscape")
 		pdfr.Landscape, err = strconv.ParseBool(landscapeForm)
 		if err != nil {
 			fmt.Println("Unable to parse landscape from query string")
