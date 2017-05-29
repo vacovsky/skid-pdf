@@ -23,7 +23,7 @@ var WkGrayscale = []string{"-g"}
 // buffered by spaces on both sides.  The result will look something
 // like this:
 // $> wkhtmltopdf http://someurl/something.html - --your-arguments
-func GenerateWKPDF(targetURL string, params []string) []byte {
+func generateWKPDF(targetURL string, params []string) []byte {
 	var result bytes.Buffer
 	wkCommand := []string{}
 
@@ -43,26 +43,32 @@ func GenerateWKPDF(targetURL string, params []string) []byte {
 	err := cmd.Run()
 
 	if err != nil {
-		log.Print(err, err.Error)
+		log.Print(err)
 	}
 	return result.Bytes()
 }
 
-func hookForAMQP(r *pdfRequest) {
-	params := []string{}
+func generateFromPDFRequest(p *pdfRequest) []byte {
+	if p.Data != "" {
+		p.URL += p.Data
+	}
+	extraParams := []string{}
+	if p.Grayscale {
+		extraParams = append(extraParams, WkGrayscale...)
+	}
+	if p.Landscape {
+		extraParams = append(extraParams, WkOrientationLandscape...)
+	}
+	return generateWKPDF(p.URL, extraParams)
+}
 
-	if r.Grayscale {
-		params = append(params, WkGrayscale...)
-	}
-	if r.Landscape {
-		params = append(params, WkOrientationLandscape...)
-	}
-	pdfResult := GenerateWKPDF(r.URL, params)
+func hookForAMQP(r *pdfRequest) {
+	pdfResult := generateFromPDFRequest(r)
 	// WriteFileToPlace()
 	fmt.Println(pdfResult)
 	writer, err := os.Create(path.Join(r.TargetFileDest, r.TargetFileName))
 	if err != nil {
-
+		log.Panicln(err)
 	}
 	writer.Write(pdfResult)
 }

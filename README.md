@@ -22,6 +22,22 @@ Streams back to the caller a PDF render of the website passed in the ```?uri={so
 - ```?grayscale={true,false,1,0,T,F}``` determines whether or not the PDF will be created in grayscale.   Default is full color / grayscale false.
 - ```?landscape={true,false,1,0,T,F}``` determines whether or not the PDF will be created in landscape mode.   Default is portrait mode / landscape false.
 
+#### POST: /html
+
+``` javascript
+{
+    "url": "https://google.com",
+    "action": "GET", // only GET is supported at this time
+    "data": "?key1=somval&key2=anotherVal", // if action == "GET", this should be in querystring format: "?key1=somval&key2=anotherVal"
+    "grayscale": true,
+    "landscape": true,
+    "targetFileName": "test1.pdf",  // name of file to be created
+    "targetFileDest": "./pdfs" // destination folder for file to be placed.  Mounting a shared volume seems to be a way to export files for consumption elsewhere.  Might add more destination formats later.
+}
+```
+
+<!--// if action == "POST" or "PUT", this should be a json blob: "{\"key1\":\"someval\",\"key2\":\"anotherVal\"}"-->
+
 #### GET: /help
 
 301s you to the README.md on github.com
@@ -92,4 +108,4 @@ docker run -p 8080:8080 -it -d skidpdf
 
 ## TODO:
 
-- open to suggestions
+- create POST /html endpoint for more complex URLs, with support for query strings and verbs.
