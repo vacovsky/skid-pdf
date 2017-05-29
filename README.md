@@ -16,7 +16,7 @@ Alternately, browse to ```http://localhost:8080/html?uri=https://github.com/vaco
 
 #### GET: /html
 
-**Streams back to the caller a PDF render of the website passed in the ```?uri={someurl}``` field.**
+Streams back to the caller a PDF render of the website passed in the ```?uri={someurl}``` field.
 
 - ```?uri={google.com,http://google.com,https://google.com}``` can be any valid string representing an http endpoint.  http/https may be specified.
 - ```?grayscale={true,false,1,0,T,F}``` determines whether or not the PDF will be created in grayscale.   Default is full color / grayscale false.
@@ -24,11 +24,11 @@ Alternately, browse to ```http://localhost:8080/html?uri=https://github.com/vaco
 
 #### GET: /help
 
-**301s you to the README.md on github.com**
+301s you to the README.md on github.com
 
 #### GET: /
 
-**301s you to the project repository on github.com**
+301s you to the project repository on github.com
 <!--##### /gof
 
 - ```?uri={google.com,http://google.com,https://google.com}``` can be any valid string representing an http endpoint.  http/https may be specified.  This method is untested and barely works.  Just left it in for anyone else who might want to play with it.-->
