@@ -56,6 +56,7 @@ The POST method on this endpoint allows for more complicated query strings, and 
 ``` javascript
 {
     "url": "https://google.com",
+    "action": "GET",
     "grayscale": true,
     "landscape": true,
     "targetFileName": "test1.pdf",  // name of file to be created
