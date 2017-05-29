@@ -42,8 +42,8 @@ Streams back to the caller a PDF render of the website passed in the ```?uri={so
     "url": "https://google.com",
     "grayscale": true,
     "landscape": true,
-    "targetFileName": "test1.pdf",
-    "targetFileDest": "./pdfs"
+    "targetFileName": "test1.pdf",  // name of file to be created
+    "targetFileDest": "./pdfs" // destination folder for file to be placed.  Mounting a shared volume seems to be a way to export files for consumption elsewhere.  Might add more destination formats later.
 }
 ```
 The above message being posted on the queue will result in a  grayscale, landscape oriented PDF file being created at ```./pdfs/test1.pdf```, with content rendered from https://google.com.
