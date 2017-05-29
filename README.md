@@ -109,4 +109,6 @@ docker run -p 8080:8080 -it -d skidpdf
 ## TODO:
 
 - enable POST endpoint to accept more than GET action, at least POST is needed
-- 
+- support needed for controlling where and how asynchronously generated files are written
+
+- open to other suggestions
