@@ -14,6 +14,12 @@ const wkhtmltopdfCmd = "wkhtmltopdf"
 // WkOrientationLandscape - if passed, sets orientation to landscape
 var WkOrientationLandscape = []string{"-O", "Landscape"}
 
+// WkHeader - prefixes header key pairs
+var WkHeader = []string{"--custom-header"}
+
+// WkPostParam - prefixes post key pairs
+var WkPostParam = []string{"--post"}
+
 //WkGrayscale - If passed, created PDF will be grayscale
 var WkGrayscale = []string{"-g"}
 
@@ -59,12 +65,26 @@ func generateFromPDFRequest(p *pdfRequest) []byte {
 	if p.Landscape {
 		extraParams = append(extraParams, WkOrientationLandscape...)
 	}
+
+	if len(p.PostParams) > 0 {
+		for k, v := range p.PostParams {
+			extraParams = append(extraParams, WkPostParam...)
+			extraParams = append(extraParams, k, v)
+		}
+	}
+	if len(p.Headers) > 0 {
+		for k, v := range p.Headers {
+			extraParams = append(extraParams, WkHeader...)
+			extraParams = append(extraParams, k, v)
+		}
+	}
+
 	return generateWKPDF(p.URL, extraParams)
+
 }
 
 func hookForAMQP(r *pdfRequest) {
 	pdfResult := generateFromPDFRequest(r)
-	// WriteFileToPlace()
 	fmt.Println(pdfResult)
 	writer, err := os.Create(path.Join(r.TargetFileDest, r.TargetFileName))
 	if err != nil {
