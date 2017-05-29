@@ -24,6 +24,8 @@ Streams back to the caller a PDF render of the website passed in the ```?uri={so
 
 #### POST: /html
 
+The POST method on this endpoint allows for more complicated query strings, and soon, headers and other form data to be sent to a target endpoint for PDF generation.
+
 ``` javascript
 {
     "url": "https://google.com",
@@ -49,7 +51,7 @@ Streams back to the caller a PDF render of the website passed in the ```?uri={so
 
 ### Using AMQP
 
-#### Submit a message for aysnchronous processing
+#### Submit a message for asynchronous processing
 
 ``` javascript
 {
@@ -106,4 +108,5 @@ docker run -p 8080:8080 -it -d skidpdf
 
 ## TODO:
 
-- create POST /html endpoint for more complex URLs, with support for query strings and verbs.
+- enable POST endpoint to accept more than GET action, at least POST is needed
+- 
