@@ -17,6 +17,8 @@ type pdfRequest struct {
 	Landscape      bool   `json:"landscape"`
 	TargetFileName string `json:"targetFileName"`
 	TargetFileDest string `json:"targetFileDest"`
+	Action         string `json:"action"`
+	Data           string `json:"data"`
 }
 
 func startQueueListener(wg *sync.WaitGroup) {

@@ -22,6 +22,22 @@ Streams back to the caller a PDF render of the website passed in the ```?uri={so
 - ```?grayscale={true,false,1,0,T,F}``` determines whether or not the PDF will be created in grayscale.   Default is full color / grayscale false.
 - ```?landscape={true,false,1,0,T,F}``` determines whether or not the PDF will be created in landscape mode.   Default is portrait mode / landscape false.
 
+#### POST: /html
+
+The POST method on this endpoint allows for more complicated query strings, and soon, headers and other form data to be sent to a target endpoint for PDF generation.
+
+``` javascript
+{
+    "url": "https://google.com",
+    "action": "GET", // only GET is supported at this time
+    "data": "#safe=off&q=wkhtmltopdf", // if action == "GET", this should be in querystring format: "?key1=somval&key2=anotherVal"
+    "grayscale": true,
+    "landscape": true,
+}
+```
+
+<!--// if action == "POST" or "PUT", this should be a json blob: "{\"key1\":\"someval\",\"key2\":\"anotherVal\"}"-->
+
 #### GET: /help
 
 301s you to the README.md on github.com
@@ -35,11 +51,12 @@ Streams back to the caller a PDF render of the website passed in the ```?uri={so
 
 ### Using AMQP
 
-#### Submit a message for aysnchronous processing
+#### Submit a message for asynchronous processing
 
 ``` javascript
 {
     "url": "https://google.com",
+    "action": "GET",
     "grayscale": true,
     "landscape": true,
     "targetFileName": "test1.pdf",  // name of file to be created
@@ -92,4 +109,7 @@ docker run -p 8080:8080 -it -d skidpdf
 
 ## TODO:
 
-- open to suggestions
+- enable POST endpoint to accept more than GET action, at least POST is needed
+- support needed for controlling where and how asynchronously generated files are written
+
+- open to other suggestions
