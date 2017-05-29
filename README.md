@@ -28,11 +28,9 @@ Streams back to the caller a PDF render of the website passed in the ```?uri={so
 {
     "url": "https://google.com",
     "action": "GET", // only GET is supported at this time
-    "data": "?key1=somval&key2=anotherVal", // if action == "GET", this should be in querystring format: "?key1=somval&key2=anotherVal"
+    "data": "#safe=off&q=wkhtmltopdf", // if action == "GET", this should be in querystring format: "?key1=somval&key2=anotherVal"
     "grayscale": true,
     "landscape": true,
-    "targetFileName": "test1.pdf",  // name of file to be created
-    "targetFileDest": "./pdfs" // destination folder for file to be placed.  Mounting a shared volume seems to be a way to export files for consumption elsewhere.  Might add more destination formats later.
 }
 ```
 

@@ -15,12 +15,11 @@ func pdfHandle(w http.ResponseWriter, r *http.Request) {
 		// advanced - builds URL using POST data to more easily transmit query
 		//string params.  We build those into the wkhtmltopdf http endpoint.
 		var err error
-		r.ParseForm()
 		pdfr := pdfRequest{}
 
-		pdfr.Action = r.Form.Get("action")
-		pdfr.Data = r.Form.Get("data")
-		pdfr.URL = r.Form.Get("url")
+		pdfr.Action = r.FormValue("action")
+		pdfr.Data = r.FormValue("data")
+		pdfr.URL = r.FormValue("url")
 
 		gs := r.Form.Get("action")
 		pdfr.Grayscale, err = strconv.ParseBool(gs)
