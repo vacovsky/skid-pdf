@@ -68,7 +68,7 @@ func hookForAMQP(r *pdfRequest) {
 	fmt.Println(pdfResult)
 	writer, err := os.Create(path.Join(r.TargetFileDest, r.TargetFileName))
 	if err != nil {
-		log.Panicln(err)
+		log.Println(err)
 	}
 	writer.Write(pdfResult)
 }

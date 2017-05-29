@@ -21,7 +21,7 @@ func pdfHandle(w http.ResponseWriter, r *http.Request) {
 		pdfr.Data = r.FormValue("data")
 		pdfr.URL = r.FormValue("url")
 
-		gs := r.Form.Get("action")
+		gs := r.Form.Get("grayscale")
 		pdfr.Grayscale, err = strconv.ParseBool(gs)
 		if err != nil {
 			fmt.Println("Unable to parse grayscale from query string")
