@@ -16,3 +16,6 @@
 src/skid-pdf/skid-pdf
 src/skid-pdf/debug
 src/skid-pdf/pdfs
+
+
+src/skid-pdf/static/bower_components
