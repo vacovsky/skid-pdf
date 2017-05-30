@@ -1,35 +1,34 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"strconv"
 	"time"
+	"github.com/gorilla/schema"
 )
 
 // http://localhost:8080/html?grayscale=false&landscape=true&uri=developers.mindbodyonline.com
 func pdfHandle(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
-		// advanced - builds URL using POST data to more easily transmit query
-		//string params.  We build those into the wkhtmltopdf http endpoint.
-		var err error
 		pdfr := pdfRequest{}
 
-		pdfr.Action = r.FormValue("action")
-		pdfr.Data = r.FormValue("data")
-		pdfr.URL = r.FormValue("url")
-
-		gs := r.Form.Get("grayscale")
-		pdfr.Grayscale, err = strconv.ParseBool(gs)
-		if err != nil {
-			fmt.Println("Unable to parse grayscale from query string")
-			fmt.Println(err)
+		if r.Body == nil {
+			http.Error(w, "Please send a request body", 400)
+			return
 		}
+		err := json.NewDecoder(r.Body).Decode(&pdfr)
+		if err != nil {
+			http.Error(w, err.Error(), 400)
+			return
+		}
+		decoder := schema.NewDecoder()
+		// r.PostForm is a map of our POST form values
+		err = decoder.Decode(&pdfr, r.PostForm)
 
-		landscapeForm := r.Form.Get("landscape")
-		pdfr.Landscape, err = strconv.ParseBool(landscapeForm)
 		if err != nil {
 			fmt.Println("Unable to parse landscape from query string")
 			fmt.Println(err)

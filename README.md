@@ -28,11 +28,17 @@ The POST method on this endpoint allows for more complicated query strings, and 
 
 ``` javascript
 {
-    "url": "https://google.com",
-    "action": "GET", // only GET is supported at this time
-    "data": "#safe=off&q=wkhtmltopdf", // if action == "GET", this should be in querystring format: "?key1=somval&key2=anotherVal"
+    "url": "https://requestb.in/17du8md1", // endpoint you want to turn into a PDF
+    "data": "#safe=off&q=wkhtmltopdf", // should be in query string format: "?key1=somval&key2=anotherVal"
     "grayscale": true,
     "landscape": true,
+    "headers": {
+        "testheader1": "testheader1"
+    },
+    "postParams": {  // if any values are passed here, the request becomes a POST.  If you want a GET, use the "data" field to pass a query string.
+        "testkey1": "testvalue1",
+        "testkey2": "testvalue2"
+    }
 }
 ```
 
@@ -44,7 +50,7 @@ The POST method on this endpoint allows for more complicated query strings, and 
 
 #### GET: /
 
-301s you to the project repository on github.com
+301s you to the project repository on github.com - eventually this will become a little form to generate PDFs
 <!--##### /gof
 
 - ```?uri={google.com,http://google.com,https://google.com}``` can be any valid string representing an http endpoint.  http/https may be specified.  This method is untested and barely works.  Just left it in for anyone else who might want to play with it.-->
@@ -55,10 +61,17 @@ The POST method on this endpoint allows for more complicated query strings, and 
 
 ``` javascript
 {
-    "url": "https://google.com",
-    "action": "GET",
+    "url": "https://requestb.in/17du8md1",  // endpoint you want to turn into a PDF
+    "data": "#safe=off&q=wkhtmltopdf", // should be in query string format: "?key1=somval&key2=anotherVal"
     "grayscale": true,
     "landscape": true,
+    "headers": {
+        "testheader1": "testheader1"
+    },
+    "postParams": {  // if any values are passed here, the request becomes a POST.  If you want a GET, use the "data" field to pass a query string.
+        "testkey1": "testvalue1",
+        "testkey2": "testvalue2"
+    },
     "targetFileName": "test1.pdf",  // name of file to be created
     "targetFileDest": "./pdfs" // destination folder for file to be placed.  Mounting a shared volume seems to be a way to export files for consumption elsewhere.  Might add more destination formats later.
 }
