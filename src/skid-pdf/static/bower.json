@@ -1,0 +1,25 @@
+{
+  "name": "skid-pdf",
+  "homepage": "https://github.com/vacoj/skid-pdf",
+  "authors": [
+    "Joe Vacovsky <vacovsky@gmail.com>"
+  ],
+  "description": "Microservice for generating PDFs",
+  "main": "main.go",
+  "keywords": [
+    "PDF"
+  ],
+  "license": "?",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "milligram": "^1.3.0",
+    "normalize-strings": "normalize#^1.1.0"
+  }
+}

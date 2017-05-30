@@ -71,16 +71,15 @@ func pdfHandle(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func landing(w http.ResponseWriter, r *http.Request) {
+func source(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "https://github.com/vacoj/skid-pdf", 301)
 }
 
 func help(w http.ResponseWriter, r *http.Request) {
-	http.Redirect(w, r, "https://github.com/vacoj/skid-pdf", 301)
+	http.Redirect(w, r, "https://github.com/vacoj/skid-pdf/wiki", 301)
 }
 
 func gofPDFHandle(w http.ResponseWriter, r *http.Request) {
-
 	r.ParseForm()
 	pdfURL := fmt.Sprintf("http://%s?sid=%s", r.Form.Get("uri"), r.Form.Get("sid"))
 	w.Header().Set("Content-Type", "application/pdf")
@@ -88,13 +87,23 @@ func gofPDFHandle(w http.ResponseWriter, r *http.Request) {
 	gofPDFFromURL(pdfURL, w)
 	// w.Write(result)
 }
+
+func webRoot(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "templates/index.html")
+}
+
 func startHTTPListener() {
 
-	http.HandleFunc("/", landing)  // exlains what the service does and how to use it.
-	http.HandleFunc("/help", help) // goes to source page
+	http.HandleFunc("/", webRoot)   // exlains what the service does and how to use it.
+	http.HandleFunc("/src", source) // exlains what the service does and how to use it.
+	http.HandleFunc("/help", help)  // goes to source page
 	http.HandleFunc("/html", pdfHandle)
 	http.HandleFunc("/gof", gofPDFHandle)
 
+	// static content
+	http.HandleFunc("/static/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, r.URL.Path[1:])
+	})
 	// http.HandleFunc("/jpeg", jpegHandle)
 
 	s := &http.Server{
