@@ -1,3 +1,28 @@
-.milligram {
-  color: #9b4dca;
+body {
+  color: #455a64;
+  background-color: #cfd8dc;
+}
+
+a {
+  color: #263238;
+}
+
+.navigation {
+  background-color: #37474f;
+  color: #eceff1
+}
+
+.navigation a {
+  color: #eceff1
+}
+
+.title-color {
+  color: #ffffff;
+}
+
+.header-logo {
+  /*margin-top: 9px;*/
+  align-content: center;
+  align-self: center;
+  /*overflow: hidden;*/
 }
