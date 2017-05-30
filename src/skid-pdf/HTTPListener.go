@@ -79,32 +79,20 @@ func help(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "https://github.com/vacoj/skid-pdf/wiki", 301)
 }
 
-func gofPDFHandle(w http.ResponseWriter, r *http.Request) {
-	r.ParseForm()
-	pdfURL := fmt.Sprintf("http://%s?sid=%s", r.Form.Get("uri"), r.Form.Get("sid"))
-	w.Header().Set("Content-Type", "application/pdf")
-
-	gofPDFFromURL(pdfURL, w)
-	// w.Write(result)
-}
-
 func webRoot(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "templates/index.html")
 }
 
 func startHTTPListener() {
-
-	http.HandleFunc("/", webRoot)   // exlains what the service does and how to use it.
+	http.HandleFunc("/", webRoot)   // a little web form for making PDFs
 	http.HandleFunc("/src", source) // exlains what the service does and how to use it.
 	http.HandleFunc("/help", help)  // goes to source page
 	http.HandleFunc("/html", pdfHandle)
-	http.HandleFunc("/gof", gofPDFHandle)
 
 	// static content
 	http.HandleFunc("/static/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, r.URL.Path[1:])
 	})
-	// http.HandleFunc("/jpeg", jpegHandle)
 
 	s := &http.Server{
 		Addr:           ":" + settings.HTTPPort,
@@ -112,6 +100,5 @@ func startHTTPListener() {
 		WriteTimeout:   10 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
-	log.Fatal(s.ListenAndServe())
-
+	log.Panic(s.ListenAndServe())
 }
