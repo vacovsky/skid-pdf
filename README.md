@@ -122,7 +122,8 @@ docker run -p 8080:8080 -it -d skidpdf
 
 ## TODO:
 
-- enable POST endpoint to accept more than GET action, at least POST is needed
-- support needed for controlling where and how asynchronously generated files are written
+- better support needed for controlling where and how asynchronously generated files are written
+- find a way to sterilize inputs to prevent command-line injections. Alternately, wrap the wkhtmltopdf C library instead of the binary.
+
 
 - open to other suggestions
