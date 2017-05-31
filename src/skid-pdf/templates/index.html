@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en" ng-app="skidpdf">
+<!--http://materializecss.com/color.html-->
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="Joe Vacovsky Jr.">
+	<meta name="description" content="A free microservice for generating PDFs of web pages.">
+	<title>Skid PDF | Info</title>
+	<link rel="icon" href="/static/icon.png">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+	<link rel="stylesheet" href="/static/bower_components/normalize.css/normalize.css">
+	<link rel="stylesheet" href="/static/bower_components/milligram/dist/milligram.min.css">
+	<link rel="stylesheet" href="/static/bower_components/angular/angular-csp.css">
+
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="/static/app.css">
+</head>
+
+<body ng-controller="skidpdfcontrol">
+	<main class="wrapper light-secondary-color secondary-text-color">
+		<nav class="navigation dark-primary-color divider-color">
+			<section class="container" id="about">
+				<a class="primary-text-color navigation-title " href="https://github.com/vacoj/skid-pdf">
+					<img class="title header-logo" height="30" width="30" src="/static/icon.png" /> &nbsp;
+					<h1 class="title title-color ">Skid PDF</h1>
+				</a>
+				<ul class="navigation-list float-right">
+					<li class="navigation-item">
+						<a class="navigation-link accent-color-text" href="#usage" data-popover>Usage</a>
+					</li>
+					<li class="navigation-item">
+						<a class="navigation-link accent-color-text" href="#testing" data-popover>Testing</a>
+					</li>
+					<li class="navigation-item">
+						<a class="navigation-link accent-color-text" href="#support" data-popover>Support</a>
+					</li>
+					<li class="navigation-item">
+						<a class="navigation-link accent-color-text" href="#limitations" data-popover>Limits</a>
+					</li>
+					<li class="navigation-item">
+						<a class="navigation-link accent-color-text" href="#contribute" data-popover>Contrib</a>
+					</li>
+				</ul>
+				<!--<a href="https://github.com/vacoj/skid-pdf" title="Skid PDF on Github" target="_blank">-->
+				</a>
+			</section>
+		</nav>
+
+		<section class="container" id="documentation">
+
+			<h1 id="skidpdf">SKID-PDF</h1>
+
+			<p>A microservice docker container for converting web pages into PDF files.</p>
+
+			<h2 id="usage">Usage</h2>
+
+			<h3 id="renderapdffromawebpage">Render a PDF from a web page</h3>
+
+			<pre><code class=" bash language- bash">curl "http://localhost:8080/pdf?grayscale=false&amp;landscape=true&amp;uri=google.com" &gt; google.pdf
+</code></pre>
+
+			<p>Alternately, browse to <code>http://localhost:8080/pdf?uri=https://github.com/vacoj/skid-pdf&amp;portrait=0&amp;grayscale=0</code>				with chrome to see the PDF.</p>
+
+			<h3 id="usinghttp">Using HTTP</h3>
+
+			<h4 id="gethtml">GET: /pdf</h4>
+
+			<p>Streams back to the caller a PDF render of the website passed in the <code>?uri={someurl}</code> field.</p>
+
+			<ul>
+				<li><code>?uri={google.com,http://google.com,https://google.com}</code> can be any valid string representing an http endpoint.
+					http/https may be specified.</li>
+
+				<li><code>?grayscale={true,false,1,0,T,F}</code> determines whether or not the PDF will be created in grayscale. Default
+					is full color / grayscale false.</li>
+
+				<li><code>?landscape={true,false,1,0,T,F}</code> determines whether or not the PDF will be created in landscape mode. Default
+					is portrait mode / landscape false.</li>
+			</ul>
+
+			<h4 id="posthtml">POST: /pdf</h4>
+
+			<p>The POST method on this endpoint allows for more complicated query strings, and soon, headers and other form data to be
+				sent to a target endpoint for PDF generation.</p>
+
+			<pre><code class=" javascript language- javascript">{
+    "url": "https://requestb.in/17du8md1", // endpoint you want to turn into a PDF
+    "data": "#safe=off&amp;q=wkhtmltopdf", // should be in query string format: "?key1=somval&amp;key2=anotherVal"
+    "grayscale": true,
+    "landscape": true,
+    "headers": {
+        "testheader1": "testheader1"
+    },
+    "postParams": {  // if any values are passed here, the request becomes a POST.  If you want a GET, use the "data" field to pass a query string.
+        "testkey1": "testvalue1",
+        "testkey2": "testvalue2"
+    }
+}
+</code></pre>
+
+			<!--// if action == "POST" or "PUT", this should be a json blob: "{\"key1\":\"someval\",\"key2\":\"anotherVal\"}"-->
+
+			<h4 id="gethelp">GET: /help</h4>
+
+			<p>301s you to the README.md on github.com</p>
+
+			<h4 id="get">GET: /</h4>
+
+			<p>301s you to the project repository on github.com - eventually this will become a little form to generate PDFs</p>
+
+			<!--##### /gof
+- ```?uri={google.com,http://google.com,https://google.com}``` can be any valid string representing an http endpoint.  http/https may be specified.  This method is untested and barely works.  Just left it in for anyone else who might want to play with it.-->
+
+			<h3 id="usingamqp">Using AMQP</h3>
+
+			<h4 id="submitamessageforasynchronousprocessing">Submit a message for asynchronous processing</h4>
+
+			<pre><code class=" javascript language- javascript">{
+    "url": "https://requestb.in/17du8md1",  // endpoint you want to turn into a PDF
+    "data": "#safe=off&amp;q=wkhtmltopdf", // should be in query string format: "?key1=somval&amp;key2=anotherVal"
+    "grayscale": true,
+    "landscape": true,
+    "headers": {
+        "testheader1": "testheader1"
+    },
+    "postParams": {  // if any values are passed here, the request becomes a POST.  If you want a GET, use the "data" field to pass a query string.
+        "testkey1": "testvalue1",
+        "testkey2": "testvalue2"
+    },
+    "targetFileName": "test1.pdf",  // name of file to be created
+    "targetFileDest": "./pdfs" // destination folder for file to be placed.  Mounting a shared volume seems to be a way to export files for consumption elsewhere.  Might add more destination formats later.
+}
+</code></pre>
+
+			<p>The above message being posted on the queue will result in a grayscale, landscape oriented PDF file being created at <code>./pdfs/test1.pdf</code>,
+				with content rendered from https://google.com.</p>
+
+			<h2 id="setup">Setup</h2>
+
+			<h3 id="modifyexistingcreatesettingsfile">Modify existing/create settings file</h3>
+
+			<pre><code class=" javascript language- javascript">{
+    "httpPort": "8080", // must be string; port for http synchronous work
+    "useQueue": true, // if false, only HTTP synchronous access is turned on
+    "queueConnectionString": "amqp://username:password@hostname:port/", // AMQP connection string.  Tested with RabbitMQ
+    "queueChannel": "skidpdf", // name of queue to listen on
+    "autoAck": true // Acknowledge receipt of enqueued messages
+}
+</code></pre>
+
+			<p><strong>By default, if no arguments are passed after the binary name, the default settings file provided is used.  To specify a settings file, run the binary/container like this:</strong></p>
+
+			<pre><code class=" bash language- bash">/path/to/binary /path/to/settings.json
+</code></pre>
+
+			<h3 id="buildtheapplication">Build the application</h3>
+
+			<p>To compile the service and build the docker image, enter the following in your terminal starting in the root of this project
+				(assuming you have docker set up and working):</p>
+
+			<pre><code class=" bash  language- bash "># build the application
+cd src/skid-pdf; go build;
+
+# go back to root of the project
+cd ../../
+</code></pre>
+
+			<h3 id="buildthedockerimageforhosting">Build the docker image for hosting</h3>
+
+			<pre><code class=" bash language- bash"># create docker image with all required elements in place
+docker build -t skidpdf -f skid-pdf.dockerfile .
+
+# turn the docker image on
+docker run -p 8080:8080 -it -d skidpdf
+</code></pre>
+
+			<h2 id="todo">TODO:</h2>
+
+			<ul>
+				<li>
+					better support needed for controlling where and how asynchronously generated files are written
+				</li>
+
+				<li>
+					find a way to sterilize inputs to prevent command-line injections. Alternately, wrap the wkhtmltopdf C library instead of
+					the binary.
+				</li>
+
+				<li>
+					open to other suggestions
+				</li>
+			</ul>
+
+		</section>
+		<section class="container" id="testing">
+			<h1 class="title">Testing</h1>
+			<h4 class="title">Make yourself a PDF</h5>
+				<div class="testing-form">
+					<form action="javascript: void(0)">
+						<select ng-model="formSelected" id="useType">
+						<option value="simpleGET" default>Simple GET</option>
+						<option value="complexGET">Complex GET</option>				
+						<option value="complexPOST">Complex POST</option>
+					</select>
+						<label for="uri">Target URL</label><textarea id="uri" ng-model="pdfRequest.url" placeholder="feed me a URL"></textarea>
+						<span class="float-right">
+							<input ng-model="pdfRequest.grayscale" id="grayscale" type="checkbox">
+							<label class="label-inline" for="grayscale">Grayscale</label>
+						</span>
+						<span style="padding-right: 15px" class="float-right">
+							<input ng-model="pdfRequest.landscape" id="landscape" type="checkbox">
+							<label class="label-inline" for="landscape">Landscape</label>
+						</span>
+						<p ng-show="formSelected != undefined">
+							<input ng-click="makeRequest()" class="button-primary" type="submit" value="Send"></fieldset>
+							<input ng-click="resetForm()" class="button-primary" type="reset" value="Reset"></fieldset>
+						</p>
+					</form>
+				</div>
+		</section>
+		<section class="container" id="support">
+			<h1 class="title">Support</h1>
+			<p>supportsupportsupportsupportsupportsupportsupport</p>
+		</section>
+		<section class="container" id="limitations">
+			<h1 class="title">Limitations</h1>
+			<ul>
+				<li>The whole bash injections thing is kinda bad. Should probably address that...</li>
+				<li>I mean, it's just making PDFs. Not a lot going on. I didn't test the upper bounds of how much PDF can be made at once.</li>
+			</ul>
+		</section>
+		<section class="container" id="Contributing">
+			<h1 class="title">Contributing</h1>
+			<p>Source code can be found <a href="https://github.com/vacoj/skid-pdf" title="Something">here</a>.</p>
+		</section>
+		<footer class="footer">
+			<section class="container">
+				<p>Made for some reason by <a target="_blank" href="https://github.com/vacoj" title="Joe Vacovsky Jr.">Joe Vacovsky Jr</a>.
+					Licensed under the
+					<a target="_blank" href="https://raw.githubusercontent.com/vacoj/skid-pdf/master/LICENSE" title="MIT License">MIT License</a>.</p>
+			</section>
+		</footer>
+	</main>
+	<script type="text/javascript" src="/static/bower_components/angular/angular.min.js"></script>
+	<script type="text/javascript" src="/static/app.js"></script>
+</body>
+
+</html>

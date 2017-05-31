@@ -6,12 +6,9 @@ import (
 
 var (
 	appname  = "skid-pdf"
-	version  = "0.2.2"
+	version  = "1.0.1"
 	settings = Settings{}
 )
-
-// TODO: add support for headers: wkhtmltopdf --custom-header Accept-Language fr-CA http://www.google.com google.pdf
-// TODO: add support for posts: wkhtmltopdf --post profcd 60 --post pname smith http://www.nysed.gov/COMS/OP001/OPSCR1 out.pdf
 
 func main() {
 	// load settings from file

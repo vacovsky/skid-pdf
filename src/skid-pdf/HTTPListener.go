@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+
 	"github.com/gorilla/schema"
 )
 
@@ -70,38 +71,34 @@ func pdfHandle(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func landing(w http.ResponseWriter, r *http.Request) {
+func source(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "https://github.com/vacoj/skid-pdf", 301)
 }
 
 func help(w http.ResponseWriter, r *http.Request) {
-	http.Redirect(w, r, "https://github.com/vacoj/skid-pdf", 301)
+	http.Redirect(w, r, "https://github.com/vacoj/skid-pdf/wiki", 301)
 }
 
-func gofPDFHandle(w http.ResponseWriter, r *http.Request) {
-
-	r.ParseForm()
-	pdfURL := fmt.Sprintf("http://%s?sid=%s", r.Form.Get("uri"), r.Form.Get("sid"))
-	w.Header().Set("Content-Type", "application/pdf")
-
-	gofPDFFromURL(pdfURL, w)
-	// w.Write(result)
+func webRoot(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "templates/index.html")
 }
+
 func startHTTPListener() {
+	http.HandleFunc("/", webRoot)   // a little web form for making PDFs
+	http.HandleFunc("/src", source) // exlains what the service does and how to use it.
+	http.HandleFunc("/help", help)  // goes to source page
+	http.HandleFunc("/pdf", pdfHandle)
 
-	http.HandleFunc("/", landing)  // exlains what the service does and how to use it.
-	http.HandleFunc("/help", help) // goes to source page
-	http.HandleFunc("/html", pdfHandle)
-	http.HandleFunc("/gof", gofPDFHandle)
-
-	// http.HandleFunc("/jpeg", jpegHandle)
+	// static content
+	http.HandleFunc("/static/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, r.URL.Path[1:])
+	})
 
 	s := &http.Server{
 		Addr:           ":" + settings.HTTPPort,
-		ReadTimeout:    10 * time.Second,
-		WriteTimeout:   10 * time.Second,
+		ReadTimeout:    100 * time.Second,
+		WriteTimeout:   100 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
-	log.Fatal(s.ListenAndServe())
-
+	log.Panic(s.ListenAndServe())
 }

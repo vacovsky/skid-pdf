@@ -7,14 +7,14 @@ A microservice docker container for converting web pages into PDF files.
 ### Render a PDF from a web page
 
 ``` bash
-curl "http://localhost:8080/html?grayscale=false&landscape=true&uri=google.com" > google.pdf
+curl "http://localhost:8080/pdf?grayscale=false&landscape=true&uri=google.com" > google.pdf
 ```
 
-Alternately, browse to ```http://localhost:8080/html?uri=https://github.com/vacoj/skid-pdf&portrait=0&grayscale=0``` with chrome to see the PDF.
+Alternately, browse to ```http://localhost:8080/pdf?uri=https://github.com/vacoj/skid-pdf&portrait=0&grayscale=0``` with chrome to see the PDF.
 
 ### Using HTTP
 
-#### GET: /html
+#### GET: /pdf
 
 Streams back to the caller a PDF render of the website passed in the ```?uri={someurl}``` field.
 
@@ -22,7 +22,7 @@ Streams back to the caller a PDF render of the website passed in the ```?uri={so
 - ```?grayscale={true,false,1,0,T,F}``` determines whether or not the PDF will be created in grayscale.   Default is full color / grayscale false.
 - ```?landscape={true,false,1,0,T,F}``` determines whether or not the PDF will be created in landscape mode.   Default is portrait mode / landscape false.
 
-#### POST: /html
+#### POST: /pdf
 
 The POST method on this endpoint allows for more complicated query strings, and soon, headers and other form data to be sent to a target endpoint for PDF generation.
 
@@ -50,10 +50,7 @@ The POST method on this endpoint allows for more complicated query strings, and 
 
 #### GET: /
 
-301s you to the project repository on github.com - eventually this will become a little form to generate PDFs
-<!--##### /gof
-
-- ```?uri={google.com,http://google.com,https://google.com}``` can be any valid string representing an http endpoint.  http/https may be specified.  This method is untested and barely works.  Just left it in for anyone else who might want to play with it.-->
+Displays the built-in documentation page, where you can test the service using a handy little web tool, as well as see all the documentation for the version you're using.
 
 ### Using AMQP
 
@@ -122,7 +119,8 @@ docker run -p 8080:8080 -it -d skidpdf
 
 ## TODO:
 
-- enable POST endpoint to accept more than GET action, at least POST is needed
-- support needed for controlling where and how asynchronously generated files are written
+- better support needed for controlling where and how asynchronously generated files are written
+- find a way to sterilize inputs to prevent command-line injections. Alternately, wrap the wkhtmltopdf C library instead of the binary.
+
 
 - open to other suggestions
