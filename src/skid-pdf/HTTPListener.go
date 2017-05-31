@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+
 	"github.com/gorilla/schema"
 )
 
@@ -86,7 +87,7 @@ func startHTTPListener() {
 	http.HandleFunc("/", webRoot)   // a little web form for making PDFs
 	http.HandleFunc("/src", source) // exlains what the service does and how to use it.
 	http.HandleFunc("/help", help)  // goes to source page
-	http.HandleFunc("/html", pdfHandle)
+	http.HandleFunc("/pdf", pdfHandle)
 
 	// static content
 	http.HandleFunc("/static/", func(w http.ResponseWriter, r *http.Request) {
@@ -95,8 +96,8 @@ func startHTTPListener() {
 
 	s := &http.Server{
 		Addr:           ":" + settings.HTTPPort,
-		ReadTimeout:    10 * time.Second,
-		WriteTimeout:   10 * time.Second,
+		ReadTimeout:    100 * time.Second,
+		WriteTimeout:   100 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
 	log.Panic(s.ListenAndServe())

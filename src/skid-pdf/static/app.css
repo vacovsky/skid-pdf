@@ -1,28 +1,126 @@
-body {
-  color: #455a64;
-  background-color: #cfd8dc;
+.wrapper {
+  display: block;
+  overflow: hidden;
+  position: relative;
+  width: 100%
 }
 
-a {
-  color: #263238;
+.wrapper .container {
+  max-width: 80rem
+}
+
+.wrapper>.container {
+  padding-bottom: 7.5rem;
+  padding-top: 7.5rem
+}
+
+.dark-primary-color {
+  background: #455A64;
+}
+
+.default-primary-color {
+  background: #607D8B;
+}
+
+.light-primary-color {
+  background: #CFD8DC;
+}
+
+.text-primary-color {
+  color: #FFFFFF;
+}
+
+.accent-color {
+  background: #009688;
+}
+
+.accent-color-text {
+  color: #009688;
+}
+
+.primary-text-color {
+  color: #212121;
+}
+
+.secondary-text-color {
+  color: #757575;
+}
+
+.divider-color {
+  border-color: #BDBDBD;
 }
 
 .navigation {
-  background-color: #37474f;
-  color: #eceff1
+  border-bottom: .1rem solid #d1d1d1;
+  display: block;
+  height: 5.2rem;
+  left: 0;
+  max-width: 100%;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 1
 }
 
-.navigation a {
-  color: #eceff1
+.navigation .container {
+  padding-bottom: 0;
+  padding-top: 0
 }
 
-.title-color {
-  color: #ffffff;
+.navigation .navigation-list {
+  list-style: none;
+  margin-bottom: 0;
+  margin-right: 5rem
 }
 
-.header-logo {
-  /*margin-top: 9px;*/
-  align-content: center;
-  align-self: center;
-  /*overflow: hidden;*/
+@media (min-width:80rem) {
+  .navigation .navigation-list {
+    margin-right: 0
+  }
+}
+
+.navigation .navigation-item {
+  float: left;
+  margin-bottom: 0;
+  margin-left: 2.5rem;
+  position: relative
+}
+
+.navigation .img {
+  height: 2rem;
+  position: relative;
+  top: .3rem
+}
+
+.navigation .navigation-title,
+.navigation .title {
+  font-family: Gotham Rounded A, Gotham Rounded B, Helvetica Neue, Arial, sans-serif;
+  position: relative
+}
+
+.navigation .navigation-link,
+.navigation .navigation-title,
+.navigation .title {
+  display: inline;
+  font-size: 2.0rem;
+  line-height: 5.2rem;
+  padding: 0;
+  text-decoration: none
+}
+
+.navigation .navigation-link.active {
+  color: #FFFFFF;
+}
+
+a.active {
+  color: #fff;
+}
+section.container a {
+  color: #009688;
+}
+
+input.button-primary {
+  background: #455A64;
+  outline: #009688;
 }
