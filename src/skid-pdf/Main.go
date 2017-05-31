@@ -6,7 +6,7 @@ import (
 
 var (
 	appname  = "skid-pdf"
-	version  = "0.2.3"
+	version  = "1.0.1"
 	settings = Settings{}
 )
 

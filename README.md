@@ -50,10 +50,7 @@ The POST method on this endpoint allows for more complicated query strings, and 
 
 #### GET: /
 
-301s you to the project repository on github.com - eventually this will become a little form to generate PDFs
-<!--##### /gof
-
-- ```?uri={google.com,http://google.com,https://google.com}``` can be any valid string representing an http endpoint.  http/https may be specified.  This method is untested and barely works.  Just left it in for anyone else who might want to play with it.-->
+Displays the built-in documentation page, where you can test the service using a handy little web tool, as well as see all the documentation for the version you're using.
 
 ### Using AMQP
 
