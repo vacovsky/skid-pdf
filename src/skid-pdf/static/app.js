@@ -29,7 +29,9 @@
 
         $scope.makeRequest = function () {
             if ($scope.formSelected == "simpleGET") {
-                $http.get("/pdf?uri=" + $scope.pdfRequest.url + "&grayscale=" + $scope.pdfRequest.grayscale + "&landscape=" + $scope.pdfRequest.landscape).then(function (response) {
+                $http.get("/pdf?uri=" + $scope.pdfRequest.url + "&grayscale=" + $scope.pdfRequest.grayscale + "&landscape=" + $scope.pdfRequest.landscape, {
+                    responseType: "arraybuffer"
+                }).then(function (response) {
                     var file = new Blob([response.data], {
                         type: 'application/pdf'
                     });
@@ -42,9 +44,17 @@
                     a.click();
                 });
             } else if ($scope.formSelected == "complexGET") {
-
+                var thing = $http.post(encodeURI(url), {
+                    some: data
+                }, {
+                    responseType: "arraybuffer"
+                })
             } else if ($scope.formSelected == "complexPOST") {
-
+                var thing = $http.post(encodeURI(url), {
+                    some: data
+                }, {
+                    responseType: "arraybuffer"
+                })
             }
 
 
