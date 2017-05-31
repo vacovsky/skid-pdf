@@ -204,16 +204,16 @@ docker run -p 8080:8080 -it -d skidpdf
 						<option value="complexGET">Complex GET</option>				
 						<option value="complexPOST">Complex POST</option>
 					</select>
-						<label for="uri">Target URL</label><textarea id="uri" placeholder="feed me a URL"></textarea>
+						<label for="uri">Target URL</label><textarea id="uri" ng-model="pdfRequest.url" placeholder="feed me a URL"></textarea>
 						<span class="float-right">
-							<input id="grayscale" type="checkbox">
+							<input ng-model="pdfRequest.grayscale" id="grayscale" type="checkbox">
 							<label class="label-inline" for="grayscale">Grayscale</label>
 						</span>
 						<span style="padding-right: 15px" class="float-right">
-							<input id="landscape" type="checkbox">
+							<input ng-model="pdfRequest.landscape" id="landscape" type="checkbox">
 							<label class="label-inline" for="landscape">Landscape</label>
 						</span>
-						<p>
+						<p ng-show="formSelected != undefined">
 							<input ng-click="makeRequest()" class="button-primary" type="submit" value="Send"></fieldset>
 							<input ng-click="resetForm()" class="button-primary" type="reset" value="Reset"></fieldset>
 						</p>
