@@ -41,6 +41,9 @@ func pdfHandle(w http.ResponseWriter, r *http.Request) {
 	case "GET":
 		// simple
 		r.ParseForm()
+		if r.Form.Get("grayscale") == "" {
+			http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		}
 		grayscaleForm := r.Form.Get("grayscale")
 		useGrayscal, err := strconv.ParseBool(grayscaleForm)
 		if err != nil {
