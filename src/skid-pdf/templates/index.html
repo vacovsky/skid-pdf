@@ -31,6 +31,9 @@
 						<a class="navigation-link accent-color-text" href="#usage" data-popover>Usage</a>
 					</li>
 					<li class="navigation-item">
+						<a class="navigation-link accent-color-text" href="#setup" data-popover>Setup</a>
+					</li>
+					<li class="navigation-item">
 						<a class="navigation-link accent-color-text" href="#testing" data-popover>Testing</a>
 					</li>
 					<li class="navigation-item">
@@ -48,14 +51,8 @@
 			</section>
 		</nav>
 
-		<section class="container" id="documentation">
-
-			<h1 id="skidpdf">SKID-PDF</h1>
-
-			<p>A microservice docker container for converting web pages into PDF files.</p>
-
-			<h2 id="usage">Usage</h2>
-
+		<section class="container" id="usage">
+			<h2>Usage</h2>
 			<h3 id="renderapdffromawebpage">Render a PDF from a web page</h3>
 
 			<pre><code class=" bash language- bash">curl "http://localhost:8080/pdf?grayscale=false&amp;landscape=true&amp;uri=google.com" &gt; google.pdf
@@ -175,50 +172,66 @@ docker build -t skidpdf -f skid-pdf.dockerfile .
 # turn the docker image on
 docker run -p 8080:8080 -it -d skidpdf
 </code></pre>
-
 			<h2 id="todo">TODO:</h2>
-
 			<ul>
 				<li>
 					better support needed for controlling where and how asynchronously generated files are written
 				</li>
 
 				<li>
-					find a way to sterilize inputs to prevent command-line injections. Alternately, wrap the wkhtmltopdf C library instead of
-					the binary.
+					wrap the wkhtmltopdf C library instead of the binary.
 				</li>
 
 				<li>
 					open to other suggestions
 				</li>
 			</ul>
-
 		</section>
 		<section class="container" id="testing">
 			<h1 class="title">Testing</h1>
-			<h4 class="title">Make yourself a PDF</h5>
-				<div class="testing-form">
-					<form action="javascript: void(0)">
-						<select ng-model="formSelected" id="useType">
-						<option value="simpleGET" default>Simple GET</option>
-						<option value="complexGET">Complex GET</option>				
-						<option value="complexPOST">Complex POST</option>
-					</select>
-						<label for="uri">Target URL</label><textarea id="uri" ng-model="pdfRequest.url" placeholder="feed me a URL"></textarea>
-						<span class="float-right">
+			<h4 class="title">Make yourself a PDF</h4>
+			<div class="testing-form">
+				<form>
+					<label for="useType">Job type</label>
+					<select ng-model="formSelected" placeholder="Job type" id="useType">
+							<option value="simpleGET" selected>Simple GET</option>
+							<option value="complexGET">Complex GET</option>				
+							<option value="complexPOST">Complex POST</option>
+						</select>
+					<label for="uri">Target URL (use Complex GET for query strings)</label><textarea id="uri" ng-model="pdfRequest.url"
+					    placeholder="feed me a URL"></textarea>
+					<label ng-show="formSelected == 'complexGET'" for="uri">Query String</label><textarea ng-show="formSelected == 'complexGET'"
+					    id="data" ng-model="pdfRequest.data" placeholder="feed me a query string"></textarea>
+
+					<!--<label ng-show="formSelected == 'complexGET' || formSelected == 'complexPOST'" for="headers">Headers<i class="material-icons">plus_one</i></label>
+					<div ng-show="formSelected == 'complexGET' || formSelected == 'complexPOST'" id="headers">
+						<tr ng-repeat="(key, value) in pdfRequest.headers">
+							<span>
+								<label for="{{key}}">Key</label>
+								<input id="{{key}}" type="text">
+								</span>
+							<span>
+								<label for="{{key + value}}">Value</label>
+								<input id="{{key + value}}" type="text">
+								</span>
+						</tr>-->
+
+			</div>
+			<span class="float-right">
 							<input ng-model="pdfRequest.grayscale" id="grayscale" type="checkbox">
 							<label class="label-inline" for="grayscale">Grayscale</label>
 						</span>
-						<span style="padding-right: 15px" class="float-right">
+			<span style="padding-right: 15px" class="float-right">
 							<input ng-model="pdfRequest.landscape" id="landscape" type="checkbox">
 							<label class="label-inline" for="landscape">Landscape</label>
 						</span>
-						<p ng-show="formSelected != undefined">
-							<input ng-click="makeRequest()" class="button-primary" type="submit" value="Send"></fieldset>
-							<input ng-click="resetForm()" class="button-primary" type="reset" value="Reset"></fieldset>
-						</p>
-					</form>
-				</div>
+			<p ng-show="formSelected != undefined">
+				<input ng-click="makeRequest()" class="button-primary" type="submit" value="Send"></fieldset>
+				<input ng-click="resetForm()" class="button-primary" type="reset" value="Reset"></fieldset>
+			</p>
+			</form>
+			<h5 class="alert" ng-show="message != ''"><i class="material-icons">error_outline</i> &nbsp; {{message}}</h5>
+			</div>
 		</section>
 		<section class="container" id="limitations">
 			<h1 class="title">Limitations</h1>
@@ -234,7 +247,7 @@ docker run -p 8080:8080 -it -d skidpdf
 			<h4>Please file an issue on <a href="https://github.com/vacoj/skid-pdf/issues">the Github page for this tool</a></h4>
 		</section>
 
-		<section class="container" id="Contributing">
+		<section class="container" id="contribute">
 			<h1 class="title">Contributing</h1>
 			<h4>Source code can be found <a href="https://github.com/vacoj/skid-pdf" title="Contributing">here</a>.</h4>
 		</section>
