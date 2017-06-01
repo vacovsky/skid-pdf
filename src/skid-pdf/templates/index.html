@@ -172,24 +172,20 @@ docker build -t skidpdf -f skid-pdf.dockerfile .
 # turn the docker image on
 docker run -p 8080:8080 -it -d skidpdf
 </code></pre>
-
 			<h2 id="todo">TODO:</h2>
-
 			<ul>
 				<li>
 					better support needed for controlling where and how asynchronously generated files are written
 				</li>
 
 				<li>
-					find a way to sterilize inputs to prevent command-line injections. Alternately, wrap the wkhtmltopdf C library instead of
-					the binary.
+					wrap the wkhtmltopdf C library instead of the binary.
 				</li>
 
 				<li>
 					open to other suggestions
 				</li>
 			</ul>
-
 		</section>
 		<section class="container" id="testing">
 			<h1 class="title">Testing</h1>
@@ -235,7 +231,6 @@ docker run -p 8080:8080 -it -d skidpdf
 			</p>
 			</form>
 			<h5 class="alert" ng-show="message != ''"><i class="material-icons">error_outline</i> &nbsp; {{message}}</h5>
-
 			</div>
 		</section>
 		<section class="container" id="limitations">

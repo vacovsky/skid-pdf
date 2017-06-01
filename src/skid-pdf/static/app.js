@@ -30,38 +30,44 @@
         };
 
         $scope.makeRequest = function () {
-            if ($scope.formSelected == "simpleGET") {
-                $http.get("/pdf?uri=" + $scope.pdfRequest.url + "&grayscale=" + $scope.pdfRequest.grayscale + "&landscape=" + $scope.pdfRequest.landscape, {
-                    responseType: "arraybuffer"
-                }).then(function (response) {
-                    var file = new Blob([response.data], {
-                        type: 'application/pdf'
-                    });
-                    var fileURL = URL.createObjectURL(file);
-                    var a = document.createElement('a');
-                    a.href = fileURL;
-                    a.target = '_blank';
-                    a.download = $scope.formSelected + ".pdf";
-                    document.body.appendChild(a);
-                    a.click();
-                });
-            } else if ($scope.formSelected == "complexGET" || $scope.formSelected == "complexPOST") {
-                $http.post("/pdf", $scope.pdfRequest, {
-                    responseType: "arraybuffer"
-                }).then(function (response) {
-                    var file = new Blob([response.data], {
-                        type: 'application/pdf'
-                    });
-                    var fileURL = URL.createObjectURL(file);
-                    var a = document.createElement('a');
-                    a.href = fileURL;
-                    a.target = '_blank';
-                    a.download = $scope.formSelected + ".pdf";
-                    document.body.appendChild(a);
-                    a.click();
-                });
+            if ($scope.pdfRequest.url == "") {
+                $scope.message = "Please provide a target URL.";
             } else {
-                $scope.message = "Please select a job type."
+                if ($scope.formSelected == "simpleGET") {
+                    $http.get("/pdf?uri=" + $scope.pdfRequest.url + "&grayscale=" + $scope.pdfRequest.grayscale + "&landscape=" + $scope.pdfRequest.landscape, {
+                        responseType: "arraybuffer"
+                    }).then(function (response) {
+                        var file = new Blob([response.data], {
+                            type: 'application/pdf'
+                        });
+                        var fileURL = URL.createObjectURL(file);
+                        var a = document.createElement('a');
+                        a.href = fileURL;
+                        a.target = '_blank';
+                        a.download = $scope.formSelected + ".pdf";
+                        document.body.appendChild(a);
+                        a.click();
+                    }).then(function () {
+                        $scope.message = "";
+                    });
+                } else if ($scope.formSelected == "complexGET" || $scope.formSelected == "complexPOST") {
+                    $http.post("/pdf", $scope.pdfRequest, {
+                        responseType: "arraybuffer"
+                    }).then(function (response) {
+                        var file = new Blob([response.data], {
+                            type: 'application/pdf'
+                        });
+                        var fileURL = URL.createObjectURL(file);
+                        var a = document.createElement('a');
+                        a.href = fileURL;
+                        a.target = '_blank';
+                        a.download = $scope.formSelected + ".pdf";
+                        document.body.appendChild(a);
+                        a.click();
+                    });
+                } else {
+                    $scope.message = "Please select a job type."
+                }
             }
         };
 

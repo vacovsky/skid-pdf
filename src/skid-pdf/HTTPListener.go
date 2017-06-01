@@ -41,10 +41,7 @@ func pdfHandle(w http.ResponseWriter, r *http.Request) {
 	case "GET":
 		// simple
 		r.ParseForm()
-		if r.Form.Get("grayscale") == "" {
-			http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
-			return
-		}
+
 		grayscaleForm := r.Form.Get("grayscale")
 		useGrayscal, err := strconv.ParseBool(grayscaleForm)
 		if err != nil {
@@ -60,6 +57,10 @@ func pdfHandle(w http.ResponseWriter, r *http.Request) {
 		}
 
 		pdfURL := fmt.Sprintf("%s", r.Form.Get("uri")) //, r.Form.Get("sid"))
+		if pdfURL == "" {
+			http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+			return
+		}
 
 		extraParams := []string{}
 		if useGrayscal {
