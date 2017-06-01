@@ -3,7 +3,8 @@
     app.Root = '/pdf';
 
     app.controller('skidpdfcontrol', function ($scope, $http) {
-
+        $scope.message = "";
+        $scope.formSelected = "simpleGET";
         $scope.pdfRequest = {
             "url": "",
             "data": "",
@@ -25,7 +26,7 @@
         $scope.addHeader = function () {};
 
         $scope.addPostData = function () {
-            
+
         };
 
         $scope.makeRequest = function () {
@@ -44,7 +45,7 @@
                     document.body.appendChild(a);
                     a.click();
                 });
-            } else if ($scope.formSelected == "complexGET") {
+            } else if ($scope.formSelected == "complexGET" || $scope.formSelected == "complexPOST") {
                 $http.post("/pdf", $scope.pdfRequest, {
                     responseType: "arraybuffer"
                 }).then(function (response) {
@@ -59,23 +60,9 @@
                     document.body.appendChild(a);
                     a.click();
                 });
-            } else if ($scope.formSelected == "complexPOST") {
-                $http.post("/pdf", $scope.pdfRequest, {
-                    responseType: "arraybuffer"
-                }).then(function (response) {
-                    var file = new Blob([response.data], {
-                        type: 'application/pdf'
-                    });
-                    var fileURL = URL.createObjectURL(file);
-                    var a = document.createElement('a');
-                    a.href = fileURL;
-                    a.target = '_blank';
-                    a.download = $scope.formSelected + ".pdf";
-                    document.body.appendChild(a);
-                    a.click();
-                });
+            } else {
+                $scope.message = "Please select a job type."
             }
-            // console.log($scope.pdfRequest);
         };
 
 
@@ -84,7 +71,7 @@
             $scope.pdfRequest = $scope.basePdfRequest;
         };
 
-        $scope.formSelected = "simpleGet";
+
     });
 
 })();

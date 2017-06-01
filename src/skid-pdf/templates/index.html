@@ -52,13 +52,7 @@
 		</nav>
 
 		<section class="container" id="usage">
-
-			<h1 id="skidpdf">SKID-PDF</h1>
-
-			<p>A microservice docker container for converting web pages into PDF files.</p>
-
 			<h2>Usage</h2>
-
 			<h3 id="renderapdffromawebpage">Render a PDF from a web page</h3>
 
 			<pre><code class=" bash language- bash">curl "http://localhost:8080/pdf?grayscale=false&amp;landscape=true&amp;uri=google.com" &gt; google.pdf
@@ -202,8 +196,9 @@ docker run -p 8080:8080 -it -d skidpdf
 			<h4 class="title">Make yourself a PDF</h4>
 			<div class="testing-form">
 				<form>
-					<select ng-model="formSelected" id="useType">
-							<option value="simpleGET" default>Simple GET</option>
+					<label for="useType">Job type</label>
+					<select ng-model="formSelected" placeholder="Job type" id="useType">
+							<option value="simpleGET" selected>Simple GET</option>
 							<option value="complexGET">Complex GET</option>				
 							<option value="complexPOST">Complex POST</option>
 						</select>
@@ -224,22 +219,24 @@ docker run -p 8080:8080 -it -d skidpdf
 								<input id="{{key + value}}" type="text">
 								</span>
 						</tr>-->
-						
-					</div>
-					<span class="float-right">
+
+			</div>
+			<span class="float-right">
 							<input ng-model="pdfRequest.grayscale" id="grayscale" type="checkbox">
 							<label class="label-inline" for="grayscale">Grayscale</label>
 						</span>
-						<span style="padding-right: 15px" class="float-right">
+			<span style="padding-right: 15px" class="float-right">
 							<input ng-model="pdfRequest.landscape" id="landscape" type="checkbox">
 							<label class="label-inline" for="landscape">Landscape</label>
 						</span>
-						<p ng-show="formSelected != undefined">
-							<input ng-click="makeRequest()" class="button-primary" type="submit" value="Send"></fieldset>
-							<input ng-click="resetForm()" class="button-primary" type="reset" value="Reset"></fieldset>
-						</p>
-				</form>
-				</div>
+			<p ng-show="formSelected != undefined">
+				<input ng-click="makeRequest()" class="button-primary" type="submit" value="Send"></fieldset>
+				<input ng-click="resetForm()" class="button-primary" type="reset" value="Reset"></fieldset>
+			</p>
+			</form>
+			<h5 class="alert" ng-show="message != ''"><i class="material-icons">error_outline</i> &nbsp; {{message}}</h5>
+
+			</div>
 		</section>
 		<section class="container" id="limitations">
 			<h1 class="title">Limitations</h1>
@@ -255,7 +252,7 @@ docker run -p 8080:8080 -it -d skidpdf
 			<h4>Please file an issue on <a href="https://github.com/vacoj/skid-pdf/issues">the Github page for this tool</a></h4>
 		</section>
 
-		<section class="container" id="Contributing">
+		<section class="container" id="contribute">
 			<h1 class="title">Contributing</h1>
 			<h4>Source code can be found <a href="https://github.com/vacoj/skid-pdf" title="Contributing">here</a>.</h4>
 		</section>

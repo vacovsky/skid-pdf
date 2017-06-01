@@ -9,6 +9,10 @@
   max-width: 80rem
 }
 
+
+.alert {
+  color: lightcoral;
+}
 .wrapper>.container {
   padding-bottom: 7.5rem;
   padding-top: 7.5rem
