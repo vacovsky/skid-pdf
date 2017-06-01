@@ -30,9 +30,9 @@ func pdfHandle(w http.ResponseWriter, r *http.Request) {
 		// r.PostForm is a map of our POST form values
 		err = decoder.Decode(&pdfr, r.PostForm)
 
-		if err != nil {
-			fmt.Println("Unable to parse landscape from query string")
-			fmt.Println(err)
+		if err != nil || pdfr.URL == "" {
+			http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+			return
 		}
 		result := generateFromPDFRequest(&pdfr)
 		w.Header().Set("Content-Type", "application/pdf")
@@ -43,6 +43,7 @@ func pdfHandle(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		if r.Form.Get("grayscale") == "" {
 			http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+			return
 		}
 		grayscaleForm := r.Form.Get("grayscale")
 		useGrayscal, err := strconv.ParseBool(grayscaleForm)
