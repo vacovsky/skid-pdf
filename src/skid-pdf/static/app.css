@@ -9,6 +9,15 @@
   max-width: 80rem
 }
 
+form .form-key {
+  width: 75%;
+  flex-direction: row;
+}
+
+form .form-val {
+  width: 75%;
+  flex-direction: row;
+}
 
 .alert {
   color: lightcoral;

@@ -2,9 +2,13 @@
     var app = angular.module('skidpdf', []);
     app.Root = '/pdf';
 
+
     app.controller('skidpdfcontrol', function ($scope, $http) {
+        $scope.tempHeaders = [];
+        $scope.tempPostData = [];
         $scope.message = "";
         $scope.formSelected = "simpleGET";
+
         $scope.pdfRequest = {
             "url": "",
             "data": "",
@@ -23,10 +27,17 @@
             "postParams": {}
         };
 
-        $scope.addHeader = function () {};
-
+        $scope.resetHeaders = function () {
+            $scope.tempHeaders = [];
+        }
+        $scope.addHeader = function () {
+            $scope.tempHeaders.push(["", ""]);
+        };
+        $scope.resetPostData = function () {
+            $scope.tempPostData = [];
+        }
         $scope.addPostData = function () {
-
+            $scope.tempPostData.push(["", ""]);
         };
 
         $scope.makeRequest = function () {
@@ -51,6 +62,12 @@
                         $scope.message = "";
                     });
                 } else if ($scope.formSelected == "complexGET" || $scope.formSelected == "complexPOST") {
+                    $scope.tempHeaders.forEach(function (header) {
+                        $scope.pdfRequest.headers[header[0]] = header[1]
+                    });
+                    $scope.tempPostData.forEach(function (postData) {
+                        $scope.pdfRequest.postParams[postData[0]] = postData[1]
+                    });
                     $http.post("/pdf", $scope.pdfRequest, {
                         responseType: "arraybuffer"
                     }).then(function (response) {
@@ -75,6 +92,8 @@
 
         $scope.resetForm = function () {
             $scope.pdfRequest = $scope.basePdfRequest;
+            $scope.tempHeaders = [];
+            $scope.tempPostData = [];
         };
 
 

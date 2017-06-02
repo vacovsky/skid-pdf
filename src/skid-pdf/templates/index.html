@@ -193,30 +193,41 @@ docker run -p 8080:8080 -it -d skidpdf
 			<div class="testing-form">
 				<form>
 					<label for="useType">Job type</label>
-					<select ng-model="formSelected" placeholder="Job type" id="useType">
+					<select ng-model="formSelected" ng-click="resetPostData(); resetHeaders();" placeholder="Job type" id="useType">
 							<option value="simpleGET" selected>Simple GET</option>
 							<option value="complexGET">Complex GET</option>				
 							<option value="complexPOST">Complex POST</option>
 						</select>
 					<label for="uri">Target URL (use Complex GET for query strings)</label><textarea id="uri" ng-model="pdfRequest.url"
-					    placeholder="feed me a URL"></textarea>
+					 placeholder="feed me a URL"></textarea>
 					<label ng-show="formSelected == 'complexGET'" for="uri">Query String</label><textarea ng-show="formSelected == 'complexGET'"
-					    id="data" ng-model="pdfRequest.data" placeholder="feed me a query string"></textarea>
+					 id="data" ng-model="pdfRequest.data" placeholder="feed me a query string"></textarea>
 
-					<!--<label ng-show="formSelected == 'complexGET' || formSelected == 'complexPOST'" for="headers">Headers<i class="material-icons">plus_one</i></label>
+					<label ng-show="formSelected == 'complexGET' || formSelected == 'complexPOST'" for="headers">Header Key/Values <a href><i ng-click="addHeader()" class="material-icons">add_circle_outline</i></a></label>
 					<div ng-show="formSelected == 'complexGET' || formSelected == 'complexPOST'" id="headers">
-						<tr ng-repeat="(key, value) in pdfRequest.headers">
-							<span>
-								<label for="{{key}}">Key</label>
-								<input id="{{key}}" type="text">
-								</span>
-							<span>
-								<label for="{{key + value}}">Value</label>
-								<input id="{{key + value}}" type="text">
-								</span>
-						</tr>-->
+						<ul ng-repeat="header in tempHeaders">
+							<div class="form-key">
+								Header Key <input ng-model="header[0]" class="form-key" type="text">
+							</div>
+							<div class="form-val">
+								Header Val <input ng-model="header[1]" class="form-val" type="text">
+							</div>
+						</ul>
+					</div>
 
+					<label ng-show="formSelected == 'complexPOST'" for="postdata">POST data Key/Values <a href><i ng-click="addPostData()" class="material-icons">add_circle_outline</i></a></label>
+					<div ng-show="formSelected == 'complexPOST'" id="postdata">
+						<ul ng-repeat="postData in tempPostData">
+							<div class="form-key">
+								Data Key <input ng-model="postData[0]" class="form-key" type="text">
+							</div>
+							<div class="form-val">
+								Data Val <input ng-model="postData[1]" class="form-val" type="text">
+							</div>
+						</ul>
+					</div>
 			</div>
+
 			<span class="float-right">
 							<input ng-model="pdfRequest.grayscale" id="grayscale" type="checkbox">
 							<label class="label-inline" for="grayscale">Grayscale</label>
