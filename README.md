@@ -103,6 +103,9 @@ To compile the service and build the docker image, enter the following in your t
 # build the application
 cd src/skid-pdf; go build;
 
+# (optional) install static deps if you want the front end
+cd static; bower install --force; cd ..;
+
 # go back to root of the project
 cd ../../
 ```
@@ -111,7 +114,7 @@ cd ../../
 
 ``` bash
 # create docker image with all required elements in place
-docker build -t skidpdf -f skid-pdf.dockerfile .
+docker build -t skidpdf -f Dockerfile .
 
 # turn the docker image on
 docker run -p 8080:8080 -it -d skidpdf
@@ -120,7 +123,5 @@ docker run -p 8080:8080 -it -d skidpdf
 ## TODO:
 
 - better support needed for controlling where and how asynchronously generated files are written
-- find a way to sterilize inputs to prevent command-line injections. Alternately, wrap the wkhtmltopdf C library instead of the binary.
-
-
+- wrap the wkhtmltopdf C library instead of the binary
 - open to other suggestions

@@ -167,7 +167,7 @@ cd ../../
 			<h3 id="buildthedockerimageforhosting">Build the docker image for hosting</h3>
 
 			<pre><code class=" bash language- bash"># create docker image with all required elements in place
-docker build -t skidpdf -f skid-pdf.dockerfile .
+	docker build -t skidpdf -f Dockerfile .
 
 # turn the docker image on
 docker run -p 8080:8080 -it -d skidpdf
