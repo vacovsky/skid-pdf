@@ -10,4 +10,5 @@ ADD src/skid-pdf/skidpdf_settings.json /skidpdf
 ADD src/skid-pdf/static /skidpdf/static
 ADD src/skid-pdf/templates /skidpdf/templates
 RUN cd /skidpdf/static; bower install --allow-root --force
-CMD cd /skidpdf/; ./skid-pdf
+RUN groupadd -r skidpdf && useradd -r -g skidpdf skidpdf
+CMD cd /skidpdf/; su skidpdf -c "./skid-pdf"
