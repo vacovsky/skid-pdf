@@ -9,6 +9,20 @@
   max-width: 80rem
 }
 
+
+
+.button,
+button,
+input[type='button'],
+input[type='reset'],
+input[type='submit'] {
+    background-color: #009688;
+    border: 0.1rem solid #455A64;
+}
+
+pre {
+      border-left: 0.3rem solid #607D8B;
+}
 form .form-key {
   width: 75%;
   flex-direction: row;
@@ -131,9 +145,4 @@ a.active {
 }
 section.container a {
   color: #009688;
-}
-
-input.button-primary {
-  background: #455A64;
-  outline: #009688;
 }
