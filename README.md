@@ -4,6 +4,14 @@ A microservice docker container for converting web pages into PDF files.
 
 **functional demo: <a href="http://skidpdf.vacovsky.us">http://skidpdf.vacovsky.us</a>**
 
+## Docker
+
+Get pre-built docker container:
+
+```bash
+docker run --rm -p 8080:8080 -d vacovsky/skidpdf:latest
+```
+
 ## Usage
 
 ### Render a PDF from a web page

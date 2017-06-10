@@ -11,7 +11,7 @@ import (
 	"github.com/gorilla/schema"
 )
 
-// http://localhost:8080/html?grayscale=false&landscape=true&uri=developers.mindbodyonline.com
+// http://localhost:8080/pdf?grayscale=false&landscape=true&uri=developers.mindbodyonline.com
 func pdfHandle(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
