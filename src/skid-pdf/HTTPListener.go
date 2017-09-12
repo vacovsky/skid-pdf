@@ -102,6 +102,10 @@ func startHTTPListener() {
 	http.HandleFunc("/help", help)  // goes to source page
 	http.HandleFunc("/pdf", pdfHandle)
 
+	// start prometheus export for monitoring
+	http.Handle("/metrics", promhttp.Handler())
+	log.Fatal(http.ListenAndServe(promAddr, nil))
+
 	// static content
 	http.HandleFunc("/static/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, r.URL.Path[1:])

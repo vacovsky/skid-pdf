@@ -42,10 +42,6 @@ func main() {
 	prometheus.MustRegister(httpReqs)
 	prometheus.MustRegister(pdfTime)
 	
-	// start prometheus export for monitoring
-	http.Handle("/metrics", promhttp.Handler())
-	log.Fatal(http.ListenAndServe(promAddr, nil))
-	
 	// listen for inbound http-originating requests for PDFs
 	go startHTTPListener()
 	wg.Add(1)
