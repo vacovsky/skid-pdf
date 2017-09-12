@@ -1,13 +1,34 @@
 package main
 
 import (
+	"log"
+	"net/http"
 	"sync"
+	
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 var (
 	appname  = "skid-pdf"
 	version  = "1.1.2"
 	settings = Settings{}
+	prom_addr = ":8080"
+
+	// set up monitoring
+	httpReqs := prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "http_requests_total",
+			Help: "How many HTTP requests processed, partitioned by status code and HTTP method.",
+		},
+		[]string{"code", "method"},
+	)
+	pdfTime := prometheus.NewHistogramVec(prometheus.HistogramOpts{
+			Name: "hash_seconds",
+			Help: "Time taken to create pdf",
+		}, 
+		[]string{"code"},
+	)
+
 )
 
 func main() {
@@ -15,6 +36,13 @@ func main() {
 	settings.load()
 	wg := &sync.WaitGroup{}
 
+	// initialize prometheus metrics for export
+	prometheus.MustRegister(httpReqs)
+	
+	// start prometheus export for monitoring
+	http.Handle("/metrics", promhttp.Handler())
+	log.Fatal(http.ListenAndServe(*addr, nil))
+	
 	// listen for inbound http-originating requests for PDFs
 	go startHTTPListener()
 	wg.Add(1)
