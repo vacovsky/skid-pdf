@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: skidpdf-ingress
+  name: skidpdf-ingress-alt
   annotations:
     kubernetes.io/ingress.class: istio
 spec:

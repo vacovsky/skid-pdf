@@ -11,6 +11,7 @@ spec:
   type: LoadBalancer
   ports:
   - port: 8080
+    name: http
   selector:
     app: skidpdf
     tier: frontend
