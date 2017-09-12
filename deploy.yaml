@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
       - name: skidpdf-frontend
-        image: vacovsky/skidpdf
+        image: gcr.io/kubetest-mindbody/skidpdf:instrumented_v2
         resources:
           requests:
             cpu: 100m

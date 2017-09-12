@@ -103,7 +103,7 @@ func startHTTPListener() {
 	http.HandleFunc("/pdf", pdfHandle)
 
 	// start prometheus export for monitoring
-	http.Handle("/metrics", promhttp.Handler())
+	http.HandleFunc("/metrics", promhttp.Handler)
 	log.Fatal(http.ListenAndServe(promAddr, nil))
 
 	// static content
