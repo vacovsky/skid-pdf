@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/gorilla/schema"
-	"github.com/prometheus/client_golang/prometheus"
 )
 
 // http://localhost:8080/pdf?grayscale=false&landscape=true&uri=developers.mindbodyonline.com
@@ -27,6 +26,7 @@ func pdfHandle(w http.ResponseWriter, r *http.Request) {
 		err := json.NewDecoder(r.Body).Decode(&pdfr)
 		if err != nil {
 			http.Error(w, err.Error(), 400)
+			httpReqs.WithLabelValues("400", "POST").Inc()
 			return
 		}
 		decoder := schema.NewDecoder()
@@ -39,6 +39,7 @@ func pdfHandle(w http.ResponseWriter, r *http.Request) {
 		}
 		result := generateFromPDFRequest(&pdfr)
 		w.Header().Set("Content-Type", "application/pdf")
+		httpReqs.WithLabelValues("200", "POST").Inc()		
 		w.Write(result)
 
 	case "GET":
@@ -76,7 +77,9 @@ func pdfHandle(w http.ResponseWriter, r *http.Request) {
 		result := generateWKPDF(pdfURL, extraParams)
 		w.Header().Set("Content-Type", "application/pdf")
 		duration := time.Since(start)
-		pdfTime.WithLabelValues(fmt.Sprintf("%d", code)).Observe(duration.Seconds())
+		// instrumentation:
+		pdfTime.WithLabelValues(fmt.Sprintf("%d", 200)).Observe(duration.Seconds())
+		httpReqs.WithLabelValues("200", "GET").Inc()
 		w.Write(result)
 	}
 }
@@ -102,7 +105,7 @@ func startHTTPListener() {
 	// static content
 	http.HandleFunc("/static/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, r.URL.Path[1:])
-		m := httpReqs.WithLabelValues("200", "GET", "static")
+		httpReqs.WithLabelValues("200", "GET", "static").Inc()
 	})
 
 	s := &http.Server{
