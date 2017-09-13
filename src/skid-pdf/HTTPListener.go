@@ -9,12 +9,13 @@ import (
 	"time"
 
 	"github.com/gorilla/schema"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 // http://localhost:8080/pdf?grayscale=false&landscape=true&uri=developers.mindbodyonline.com
 func pdfHandle(w http.ResponseWriter, r *http.Request) {
 	start := time.Now()
-	
+
 	switch r.Method {
 	case "POST":
 		pdfr := pdfRequest{}
@@ -39,7 +40,7 @@ func pdfHandle(w http.ResponseWriter, r *http.Request) {
 		}
 		result := generateFromPDFRequest(&pdfr)
 		w.Header().Set("Content-Type", "application/pdf")
-		httpReqs.WithLabelValues("200", "POST").Inc()		
+		httpReqs.WithLabelValues("200", "POST").Inc()
 		w.Write(result)
 
 	case "GET":
@@ -103,7 +104,7 @@ func startHTTPListener() {
 	http.HandleFunc("/pdf", pdfHandle)
 
 	// start prometheus export for monitoring
-	http.HandleFunc("/metrics", promhttp.Handler)
+	http.Handle("/metrics", promhttp.Handler())
 	log.Fatal(http.ListenAndServe(promAddr, nil))
 
 	// static content
